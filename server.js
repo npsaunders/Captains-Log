@@ -3,7 +3,7 @@ require('dotenv').config();
 const express = require("express");
 const app = express();
 const mongoose = require('mongoose');
-const Book = require('./models/logs.js')
+const Log = require('./models/logs.js')
 
 // Database Connection------------------
 mongoose.connect(process.env.DATABASE_URL, {
@@ -27,6 +27,15 @@ app.use(express.urlencoded({ extended: true }));
 
 // ROUTES
 // INDEX
+app.get('/logs', (req, res) => {
+  Log.find({}, (error, allLogs) => {
+    res.render('index.ejs', {
+      logs: allLogs,
+    });
+  });
+});
+
+
 // NEW
 app.get("/logs/new", (req, res) => {
   res.render("new.ejs");
@@ -43,7 +52,7 @@ app.post("/logs", (req, res) => {
     //if not checked, req.body.completed is undefined
     req.body.shipIsBroken = false;
   }
-  Logs.create(req.body, (error, createdLog) => {
+  Log.create(req.body, (error, createdLog) => {
     res.redirect('/logs');
   });
 })
