@@ -2,6 +2,21 @@
 require('dotenv').config();
 const express = require("express");
 const app = express();
+const mongoose = require('mongoose');
+const Book = require('./models/logs.js')
+
+// Database Connection------------------
+mongoose.connect(process.env.DATABASE_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
+
+// Database Connection Error/Success
+// Define callback functions for various events
+const db = mongoose.connection
+db.on('error', (err) => console.log(err.message + ' is mongo not running?'));
+db.on('connected', () => console.log('mongo connected'));
+db.on('disconnected', () => console.log('mongo disconnected'));
 
 
 // MIDDLEWARE------------------------
@@ -20,6 +35,20 @@ app.get("/logs/new", (req, res) => {
 // DELETE
 // UPDATE
 // CREATE
+app.post("/logs", (req, res) => {
+  if (req.body.shipIsBroken === 'on') {
+    //if checked, req.body.completed is set to 'on'
+    req.body.shipIsBroken = true;
+  } else {
+    //if not checked, req.body.completed is undefined
+    req.body.shipIsBroken = false;
+  }
+  Logs.create(req.body, (error, createdLog) => {
+    res.redirect('/logs');
+  });
+})
+
+
 // EDIT
 // SHOW
 
