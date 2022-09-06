@@ -10,12 +10,12 @@
   <nav>
     <a href="/logs/new">Add a New Log</a>
   </nav>
-  <h1>Logs index page</h1>
+  <h1>Logs Index Page</h1>
   <ul>
     <% logs.forEach(log=> { %>
       <li>
-        <a href="/logs/<%=logs._id; %>">
-          <%=log.title; %>
+        <a href="/logs/<%=log._id %>">
+          <%=log.title %>
         </a>
       </li>
       <% }) %>

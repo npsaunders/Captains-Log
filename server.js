@@ -1,7 +1,8 @@
-//require  items from .env file
-require('dotenv').config();
+
 const express = require("express");
 const app = express();
+//require  items from .env file
+require('dotenv').config();
 const mongoose = require('mongoose');
 const Log = require('./models/logs.js')
 
@@ -22,7 +23,6 @@ db.on('disconnected', () => console.log('mongo disconnected'));
 // MIDDLEWARE------------------------
 // Body parser middleware: give us access to req.body
 app.use(express.urlencoded({ extended: true }));
-
 
 
 // ROUTES
@@ -59,8 +59,15 @@ app.post("/logs", (req, res) => {
 
 
 // EDIT
-// SHOW
 
+// SHOW
+app.get('/logs/:id', (req, res) => {
+  Log.findById(req.params.id, (err, foundLog) => {
+    res.render('show.ejs', {
+      log: foundLog,
+    });
+  });
+});
 
 
 
